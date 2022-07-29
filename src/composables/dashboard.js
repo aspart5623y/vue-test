@@ -63,8 +63,8 @@ export default function useDashboard() {
         array.map((value) => {
             if (value === 0) {
                 errorMessage.value = 'Please check at least one item for each list'
+                loading.value = false
                 return false
-
             } else {
                 errorMessage.value = ''
             }
@@ -92,6 +92,7 @@ export default function useDashboard() {
                 response = response.data
                 if (response.success == true) {
                     success.value = true
+                    Object.assign(form, initState)
                 }
             })
             .catch((error) => {
