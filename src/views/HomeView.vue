@@ -17,49 +17,51 @@
                     <DashboardPreloader />
                   </div>
 
-                  <div v-show="!loader">
-                  <p class="text-danger">{{ error.investigations }}</p>
-                  <p class="text-danger">{{ errorMessage }}</p>
-                  
-                  <!-- checkbox groups -->
-                    <div v-for="(item, index) in allData" :key="index">
-                      <CheckboxGroup :title="item.title" :array="item.investigations"
-                        @investigation-event:number="setFromData($event, index, item.title)"
-                       />
-                    </div>
-                  </div>
-
-                  <div class="row">
-                    <div class="col-lg-6">
-                      <!-- select -->
-                      <Select title="CT Scan"
-                        :options="[
-                          'Scan Needed In The Left Cerebral Hemisphere',
-                          'Other'
-                        ]"
-                        v-model="form.ctscan"
-                      />
-                      <p class="text-danger">{{ error.ctscan }}</p>
-                    </div>
-
-                    <div class="col-lg-6">
-                      <!-- select -->
-                      <Select title="MRI"
-                        :options="[
-                          'Full Body MRI',
-                          'Other'
-                        ]"
-                        v-model="form.mri"
-                      />
-                      <p class="text-danger">{{ error.mri }}</p>
-                    </div>
-                  </div>
-                  
-                  <!-- submit button -->
-                  <div class="text-end pt-5">
+                  <form>
+                    <div v-show="!loader">
+                      <p class="text-danger">{{ error.investigations }}</p>
+                      <p class="text-danger">{{ errorMessage }}</p>
                     
-                    <Button title="Save and Send" :loading="loading" :action="saveForm" />
-                  </div>
+                      <!-- checkbox groups -->
+                      <div v-for="(item, index) in allData" :key="index">
+                        <CheckboxGroup :title="item.title" :array="item.investigations"
+                          @investigation-event:number="setFromData($event, index, item.title)"
+                         />
+                      </div>
+                    </div>
+                    
+                    <div class="row">
+                      <div class="col-lg-6">
+                        <!-- select -->
+                        <Select title="CT Scan"
+                          :options="[
+                            'Scan Needed In The Left Cerebral Hemisphere',
+                            'Other'
+                          ]"
+                          v-model="form.ctscan"
+                        />
+                        <p class="text-danger">{{ error.ctscan }}</p>
+                      </div>
+                    
+                      <div class="col-lg-6">
+                        <!-- select -->
+                        <Select title="MRI"
+                          :options="[
+                            'Full Body MRI',
+                            'Other'
+                          ]"
+                          v-model="form.mri"
+                        />
+                        <p class="text-danger">{{ error.mri }}</p>
+                      </div>
+                    </div>
+                    
+                    <!-- submit button -->
+                    <div class="text-end pt-5">
+                      
+                      <Button title="Save and Send" :loading="loading" :action="saveForm" />
+                    </div>
+                  </form>
                   
                 </div>
               </div>
@@ -128,9 +130,11 @@
       var popUp = new bootstrap.Modal(successModal)
       popUp.show()
  
-      setInterval(() => {
-        location.reload()
-      }, 3000)
+      var form = document.querySelector('form')
+      form.reset()
+      // setInterval(() => {
+      //   location.reload()
+      // }, 3000)
     }
   })
 
