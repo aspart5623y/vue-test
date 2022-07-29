@@ -92,7 +92,6 @@ export default function useDashboard() {
                 response = response.data
                 if (response.success == true) {
                     success.value = true
-                    Object.assign(form, initState)
                 }
             })
             .catch((error) => {
@@ -100,6 +99,8 @@ export default function useDashboard() {
             })
             .finally(() => {
                 loading.value = false
+                Object.assign(form, initState)
+                success.value = false
             })
         }
 

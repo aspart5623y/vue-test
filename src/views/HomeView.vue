@@ -132,9 +132,7 @@
  
       var form = document.querySelector('form')
       form.reset()
-      // setInterval(() => {
-      //   location.reload()
-      // }, 3000)
+      // success.value = false
     }
   })
 
