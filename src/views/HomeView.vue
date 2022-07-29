@@ -18,9 +18,14 @@
                   </div>
 
                   <div v-show="!loader">
+                  <p class="text-danger">{{ error.investigations }}</p>
+                  <p class="text-danger">{{ errorMessage }}</p>
+                  
                   <!-- checkbox groups -->
                     <div v-for="(item, index) in allData" :key="index">
-                      <CheckboxGroup :title="item.title" :array="item.investigations" />
+                      <CheckboxGroup :title="item.title" :array="item.investigations"
+                        @investigation-event:number="setFromData($event, index, item.title)"
+                       />
                     </div>
                   </div>
 
@@ -32,7 +37,9 @@
                           'Scan Needed In The Left Cerebral Hemisphere',
                           'Other'
                         ]"
+                        v-model="form.ctscan"
                       />
+                      <p class="text-danger">{{ error.ctscan }}</p>
                     </div>
 
                     <div class="col-lg-6">
@@ -42,16 +49,16 @@
                           'Full Body MRI',
                           'Other'
                         ]"
+                        v-model="form.mri"
                       />
+                      <p class="text-danger">{{ error.mri }}</p>
                     </div>
-
                   </div>
-
                   
+                  <!-- submit button -->
                   <div class="text-end pt-5">
                     <Button title="Save and Send" :action="saveForm" />
                   </div>
-
                   
                 </div>
               </div>
@@ -61,6 +68,21 @@
         </div>
       </div>
     </Layout>
+
+
+    <!-- S U C C E S S     M O D A L -->
+    <div class="modal fade" id="successModal" data-bs-backdrop="static">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-body text-center py-5">
+            <i class="fas fa-check-circle text-success" style="font-size: 50px"></i>
+            <h2 class="text-dark fw-bold">Success</h2>
+            <p class="text-muted">Record Saved successfully</p>
+            <button class="btn btn-success px-5" data-bs-dismiss="modal">Ok</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
 
   </section>
@@ -73,14 +95,46 @@
   import Select from '@/components/atoms/Select'
   import DashboardPreloader from '@/components/molecule/DashboardPreloader'
   import useDashboard from '@/composables/dashboard'
-import { onMounted } from '@vue/runtime-core'
+  import bootstrap from 'bootstrap/dist/js/bootstrap.bundle'
+  import { computed, onMounted, watch } from '@vue/runtime-core'
 
-  const { allData, getData, loader } = useDashboard()
+  const { allData, getData, loader, errorMessage, success,
+        loading, form, error, submitData } = useDashboard()
+  
 
   onMounted(getData)
 
+  const setFromData = (number, index, title) => {
+    if (form.investigations.find(x => x.title == title)) {
+      let index = form.investigations.findIndex(x => x.title == title)
+      if (number > 0) {
+        form.investigations[index].number = number
+      } else {
+        form.investigations.splice(index, 1)
+      }
+    } else {
+      form.investigations.push({
+        "title": title,
+        "number": number,
+      })
+    }
+  }
+
+
+  watch (success, async(newSuccess, oldSuccess) => {
+    if (newSuccess == true) {
+      var successModal = document.getElementById('successModal')
+      var popUp = new bootstrap.Modal(successModal)
+      popUp.show()
+ 
+      // setInterval(() => {
+      //   location.reload()
+      // }, 3000)
+    }
+  })
+
   const saveForm = (() => {
-    console.log('form saved');
+    submitData()
   })
 
 
