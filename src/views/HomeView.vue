@@ -57,7 +57,8 @@
                   
                   <!-- submit button -->
                   <div class="text-end pt-5">
-                    <Button title="Save and Send" :action="saveForm" />
+                    
+                    <Button title="Save and Send" :loading="loading" :action="saveForm" />
                   </div>
                   
                 </div>
@@ -127,9 +128,9 @@
       var popUp = new bootstrap.Modal(successModal)
       popUp.show()
  
-      // setInterval(() => {
-      //   location.reload()
-      // }, 3000)
+      setInterval(() => {
+        location.reload()
+      }, 3000)
     }
   })
 
